@@ -2,3 +2,6 @@ syntax: glob
 .pydevproject
 .project
 *.pyc
+dist/
+build/
+beam_integrals.egg-info/
