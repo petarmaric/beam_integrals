@@ -65,4 +65,7 @@ setup(
     include_package_data=True,
     install_requires = parse_requirements('requirements.txt'),
     dependency_links = parse_dependency_links('requirements.txt'),
+    setup_requires = ['nose>=1.0'],
+    tests_require = ['nose>=1.0', 'coverage>=3.3'],
+    test_suite = 'nose.collector',
 )
