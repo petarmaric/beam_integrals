@@ -9,6 +9,8 @@ This work is a part of the investigation within the research projects:
 [ON174027]_ and [TR36017]_, supported by the Ministry for Science and
 Technology, Republic of Serbia. This support is gratefully acknowledged.
 
+`Continuous integration`_ is powered by `Jenkins`_.
+
 References
 ----------
 
@@ -24,6 +26,8 @@ References
    investigation and environmental assessment of possible applications"
 
 .. _`previous work`: https://bitbucket.org/losmi83/mktn5
+.. _`Continuous integration`: http://ci.petarmaric.com/job/beam_integrals/
+.. _`Jenkins`: https://jenkins-ci.org/
 
 
 Installation
