@@ -37,6 +37,18 @@ def parse_dependency_links(file_name):
     
     return dependency_links
 
+def get_test_requirements():
+    """
+    Python 2.7 introduced new assert* methods in `unittest.TestCase`, fallback
+    to backported library if Python < 2.7 
+    """
+    requirements = parse_requirements('requirements-test.txt')
+    
+    if sys.version_info < (2, 7):
+        requirements.append('unittest2')
+    
+    return requirements
+
 setup(
     name='beam_integrals',
     version=beam_integrals.__version__,
@@ -66,6 +78,6 @@ setup(
     install_requires = parse_requirements('requirements.txt'),
     dependency_links = parse_dependency_links('requirements.txt'),
     setup_requires = ['nose>=1.0'],
-    tests_require = ['nose>=1.0', 'coverage>=3.3'],
+    tests_require = get_test_requirements(),
     test_suite = 'nose.collector',
 )
