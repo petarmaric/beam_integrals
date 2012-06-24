@@ -7,6 +7,9 @@ class BaseBeamType(FriendlyNameFromClassMixin):
     id = None #@ReservedAssignment
     
     __metaclass__ = PluginMount
+    
+    def __str__(self):
+        return "%s (id=%d)" % (self.name, self.id)
 
 
 class SimplySupportedBeam(BaseBeamType):
