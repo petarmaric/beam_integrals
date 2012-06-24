@@ -37,6 +37,11 @@ To install beam_integrals run::
 
     $ pip install beam_integrals
 
+It's strongly recommended to install `gmpy`_. Without it code will still run
+correctly, but much slower at high precision.
+
+.. _`gmpy`: http://pypi.python.org/pypi/gmpy
+
 
 Console app usage
 =================
