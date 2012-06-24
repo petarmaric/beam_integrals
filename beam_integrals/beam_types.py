@@ -10,6 +10,10 @@ class BaseBeamType(FriendlyNameFromClassMixin):
     
     def __str__(self):
         return "%s (id=%d)" % (self.name, self.id)
+    
+    @property
+    def filename(self):
+        return "%d-%s" % (self.id, '-'.join(self.name.lower().split()))
 
 
 class SimplySupportedBeam(BaseBeamType):
