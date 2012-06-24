@@ -1,0 +1,3 @@
+# sympy.cse() doesn't do a very good job in 0.7.1.
+# Change this requirement to 'sympy>=0.7.2' once it's out.
+-e git+https://github.com/sympy/sympy.git#egg=sympy

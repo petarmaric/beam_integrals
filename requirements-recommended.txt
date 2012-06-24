@@ -1,0 +1,2 @@
+# Vastly improves performance of `sympy.mpmath`.
+gmpy>=1.10
