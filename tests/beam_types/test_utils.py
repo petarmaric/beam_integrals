@@ -20,6 +20,15 @@ ID_TO_FILENAME = {
     6: '6-free-free-beam',
 }
 
+ID_TO_CHARACTERISTIC_EQUATION_STR_REPR = {
+    1: 'sin(mu_m) = 0',
+    2: 'cos(mu_m)*cosh(mu_m) - 1 = 0',
+    3: 'cos(mu_m)*cosh(mu_m) + 1 = 0',
+    4: 'tan(mu_m) - tanh(mu_m) = 0',
+    5: 'tan(mu_m) - tanh(mu_m) = 0',
+    6: 'cos(mu_m)*cosh(mu_m) - 1 = 0',
+}
+
 
 def test_str_repr():
     for id in bt.VALID_BEAM_TYPE_IDS: #@ReservedAssignment
@@ -34,3 +43,13 @@ def test_filename():
 
 def check_filename(id): #@ReservedAssignment
     eq_(ID_TO_FILENAME[id], bt.ID_TO_BEAM_TYPE_INSTANCE[id].filename)
+
+def test_characteristic_equation_str_repr():
+    for id in bt.VALID_BEAM_TYPE_IDS: #@ReservedAssignment
+        yield check_characteristic_equation_str_repr, id
+
+def check_characteristic_equation_str_repr(id): #@ReservedAssignment
+    eq_(
+        ID_TO_CHARACTERISTIC_EQUATION_STR_REPR[id],
+        bt.ID_TO_BEAM_TYPE_INSTANCE[id].characteristic_equation_str
+    )

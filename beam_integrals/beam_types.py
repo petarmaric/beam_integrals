@@ -1,10 +1,13 @@
+from sympy import cos, cosh, sin, tan, tanh
 from warnings import warn
+from . import mu_m
 from .exceptions import InvalidBeamTypeError, PerformanceWarning
 from .utils import FriendlyNameFromClassMixin, PluginMount
 
 
 class BaseBeamType(FriendlyNameFromClassMixin):
     id = None #@ReservedAssignment
+    characteristic_function = None
     
     __metaclass__ = PluginMount
     
@@ -14,22 +17,30 @@ class BaseBeamType(FriendlyNameFromClassMixin):
     @property
     def filename(self):
         return "%d-%s" % (self.id, '-'.join(self.name.lower().split()))
+    
+    @property
+    def characteristic_equation_str(self):
+        return "%s = 0" % self.characteristic_function
 
 
 class SimplySupportedBeam(BaseBeamType):
     id = 1 #@ReservedAssignment
+    characteristic_function = sin(mu_m)
 
 
 class ClampedClampedBeam(BaseBeamType):
     id = 2 #@ReservedAssignment
+    characteristic_function = cos(mu_m)*cosh(mu_m) - 1
 
 
 class ClampedFreeBeam(BaseBeamType):
     id = 3 #@ReservedAssignment
+    characteristic_function = cos(mu_m)*cosh(mu_m) + 1
 
 
 class ClampedSimplySupportedBeam(BaseBeamType):
     id = 4 #@ReservedAssignment
+    characteristic_function = tan(mu_m) - tanh(mu_m)
 
 
 class SimplySupportedFreeBeam(ClampedSimplySupportedBeam):
