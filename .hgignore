@@ -6,3 +6,4 @@ dist/
 build/
 beam_integrals.egg-info/
 .coverage
+html_coverage_report/
