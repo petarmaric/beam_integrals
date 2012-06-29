@@ -1,4 +1,4 @@
-from sympy import cos, cosh, sin, tan, tanh
+from sympy import cos, cosh, Float, pi, sin, tan, tanh
 from warnings import warn
 from . import mu_m
 from .exceptions import InvalidBeamTypeError, PerformanceWarning
@@ -8,6 +8,10 @@ from .utils import FriendlyNameFromClassMixin, PluginMount
 class BaseBeamType(FriendlyNameFromClassMixin):
     id = None #@ReservedAssignment
     characteristic_function = None
+    
+    dont_improve_mu_m_for_modes = ()
+    mu_m_initial_search_width = pi/10
+    mu_m_increase_search_width_by = Float(1.05)
     
     __metaclass__ = PluginMount
     
@@ -21,34 +25,69 @@ class BaseBeamType(FriendlyNameFromClassMixin):
     @property
     def characteristic_equation_str(self):
         return "%s = 0" % self.characteristic_function
+    
+    def mu_m_initial_guess(self, mode):
+        raise NotImplementedError
 
 
 class SimplySupportedBeam(BaseBeamType):
     id = 1 #@ReservedAssignment
     characteristic_function = sin(mu_m)
+    
+    def mu_m_initial_guess(self, mode):
+        return mode * pi
 
 
 class ClampedClampedBeam(BaseBeamType):
     id = 2 #@ReservedAssignment
     characteristic_function = cos(mu_m)*cosh(mu_m) - 1
+    
+    def mu_m_initial_guess(self, mode):
+        return (2*mode + 1) * pi/2
 
 
 class ClampedFreeBeam(BaseBeamType):
     id = 3 #@ReservedAssignment
     characteristic_function = cos(mu_m)*cosh(mu_m) + 1
+    
+    def mu_m_initial_guess(self, mode):
+        return (2*mode - 1) * pi/2
 
 
 class ClampedSimplySupportedBeam(BaseBeamType):
     id = 4 #@ReservedAssignment
     characteristic_function = tan(mu_m) - tanh(mu_m)
+    
+    def mu_m_initial_guess(self, mode):
+        return (4*mode + 1) * pi/4
 
 
 class SimplySupportedFreeBeam(ClampedSimplySupportedBeam):
     id = 5 #@ReservedAssignment
+    
+    dont_improve_mu_m_for_modes = (1,)
+    
+    def mu_m_initial_guess(self, mode):
+        # Special case for this mode
+        if mode == 1:
+            return Float(1)
+        
+        return super(SimplySupportedFreeBeam, self).mu_m_initial_guess(mode-1)
 
 
 class FreeFreeBeam(ClampedClampedBeam):
     id = 6 #@ReservedAssignment
+    
+    dont_improve_mu_m_for_modes = (1, 2)
+    
+    def mu_m_initial_guess(self, mode):
+        # Special case for this mode
+        if mode == 1:
+            return Float(0)
+        elif mode == 2:
+            return Float(1)
+        
+        return super(FreeFreeBeam, self).mu_m_initial_guess(mode-2)
 
 
 ID_TO_BEAM_TYPE_CLASS = dict((cls.id, cls) for cls in BaseBeamType.plugins)
