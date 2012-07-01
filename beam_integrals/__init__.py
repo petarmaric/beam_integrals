@@ -2,7 +2,7 @@ import os
 from sympy import mpmath, symbols
 
 
-if 'MPMATH_NOGMPY' not in os.environ and mpmath.libmp.BACKEND == 'python': #@UndefinedVariable
+if 'MPMATH_NOGMPY' not in os.environ and mpmath.libmp.BACKEND == 'python': #@UndefinedVariable, pragma: no cover
     import warnings
     from .exceptions import PerformanceWarning
     
