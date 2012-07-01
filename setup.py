@@ -5,8 +5,6 @@ import re
 import sys
 from setuptools import setup, find_packages
 
-import beam_integrals
-
 
 if sys.version_info < (2, 6):
     print 'ERROR: beam_integrals requires at least Python 2.6 to run.'
@@ -51,7 +49,7 @@ def get_test_requirements():
 
 setup(
     name='beam_integrals',
-    version=beam_integrals.__version__,
+    version='0.1.0-pre-alpha',
     url='https://bitbucket.org/petar/beam_integrals/',
     author='Petar Maric',
     author_email='petarmaric@uns.ac.rs',
