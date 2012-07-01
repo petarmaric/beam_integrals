@@ -6,7 +6,6 @@ from .utils import FriendlyNameFromClassMixin, PluginMount
 
 
 class BaseRootfinder(FriendlyNameFromClassMixin):
-    solver_name = None
     max_iterations = 10**9
     
     __metaclass__ = PluginMount
