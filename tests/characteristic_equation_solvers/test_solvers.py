@@ -21,6 +21,7 @@ def check_find_best_root(beam_type_id, mode):
         mode,
         t.DECIMAL_PRECISION,
         include_error=True,
+        use_cache=False
     )
     
     # Special case for this mode, don't check the `mu_m_error`
@@ -44,6 +45,7 @@ def check_fail_for_ieee_754_floating_point_precision(binary_precision):
                 mode,
                 decimal_precision,
                 include_error=True,
+                use_cache=False
             )
             
             # Special case for this mode, don't check the `mu_m_error`
