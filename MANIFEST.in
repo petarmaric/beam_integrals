@@ -3,6 +3,7 @@ include LICENSE
 include README
 
 include MANIFEST.in
+include .coveragerc
 include distribute_setup.py
 include requirements*.txt
 include requirements_utils.py
