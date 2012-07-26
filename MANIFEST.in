@@ -4,6 +4,5 @@ include README
 
 include MANIFEST.in
 include distribute_setup.py
-include requirements.txt
-include requirements-recommended.txt
-include requirements-test.txt
+include requirements*.txt
+include requirements_utils.py
