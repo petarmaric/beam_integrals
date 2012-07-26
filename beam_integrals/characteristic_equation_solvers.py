@@ -9,7 +9,7 @@ from .utils import FriendlyNameFromClassMixin, PluginMount
 
 
 class BaseRootfinder(FriendlyNameFromClassMixin):
-    max_iterations = 10**9
+    max_iterations = 100
     
     __metaclass__ = PluginMount
     
@@ -49,6 +49,7 @@ class BaseRootfinder(FriendlyNameFromClassMixin):
                     x0=self.x0(beam_type, mode, decimal_precision),
                     solver=self.solver_name,
                     maxsteps=self.max_iterations,
+                    verify=False,
                     **kwargs
                 ),
                 decimal_precision
