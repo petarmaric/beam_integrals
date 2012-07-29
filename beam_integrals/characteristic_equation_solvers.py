@@ -148,6 +148,17 @@ def find_best_root(beam_type, mode, decimal_precision=DEFAULT_DECIMAL_PRECISION,
     
     return result if include_error else result[0]
 
+def find_best_roots(beam_type, max_mode=DEFAULT_MAX_MODE,
+    decimal_precision=DEFAULT_DECIMAL_PRECISION, include_error=True, **kwargs):
+    modes = range(1, max_mode+1)
+    return [
+        find_best_root(
+            beam_type, mode, decimal_precision, include_error=include_error,
+            use_cache=False, **kwargs
+        )
+        for mode in modes
+    ]
+
 
 class BestRootsCache(object):
     disk_cache_dir = os.path.join(PROJECT_SETTINGS_DIR, 'cache', 'characteristic-equations')
@@ -165,17 +176,9 @@ class BestRootsCache(object):
         )
     
     def regenerate(self, max_mode=DEFAULT_MAX_MODE, decimal_precision=DEFAULT_DECIMAL_PRECISION, **kwargs):
-        modes = range(1, max_mode+1)
         results = dict(
-            (
-                (beam_type.id, mode),
-                find_best_root(
-                    beam_type, mode, decimal_precision, include_error=True,
-                    use_cache=False, cache_instance=self, **kwargs
-                )
-             )
-            for mode in modes
-                for beam_type in ALL_BEAM_TYPE_INSTANCES
+            (beam_type.id, find_best_roots(beam_type, max_mode, decimal_precision, **kwargs))
+            for beam_type in ALL_BEAM_TYPE_INSTANCES
         )
         
         with open(self.disk_cache_filename(decimal_precision), 'wb') as f:
@@ -205,8 +208,22 @@ class BestRootsCache(object):
             self._load_disk_cache(decimal_precision)
         
         try:
-            return self._ram_cache[decimal_precision][(beam_type.id, mode)]
+            if mode <= 0:
+                raise exc.InvalidModeError("Mode has to be a positive number (%s given)" % mode)
+            
+            # Mode list is 0 indexed
+            return self._ram_cache[decimal_precision][beam_type.id][mode-1]
         except KeyError:
+            # Old version cache, doesn't support this beam type
+            raise exc.BeamTypeNotFoundInCacheError(
+                "No best root found in cache for %s. You'll "\
+                "need to regenerate the cache by calling the console app "\
+                "'beam_integrals best-roots-of-characteristic-equations-regenerate-cache' "\
+                "or by using "\
+                "'beam_integrals.characteristic_equation_solvers.best_roots_cache.regenerate' "\
+                "Python API call." % beam_type
+            )
+        except IndexError:
             raise exc.ModeNotFoundInCacheError(
                 "No best root found in cache for %s when mode = %d. You'll "\
                 "need to regenerate the cache by calling the console app "\
@@ -215,7 +232,7 @@ class BestRootsCache(object):
                 "'beam_integrals.characteristic_equation_solvers.best_roots_cache.regenerate' "\
                 "Python API call. Please remember to increase max_mode to the "\
                 "desired limit." %
-                (beam_type.name, mode)
+                (beam_type, mode)
             )
 
 

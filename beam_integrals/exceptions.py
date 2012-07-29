@@ -10,6 +10,10 @@ class InvalidBeamTypeError(BeamTypesException):
     """The given value can't be coerced to a valid beam type"""
 
 
+class InvalidModeError(BeamTypesException):
+    """The given value isn't a valid mode"""
+
+
 class RootfinderError(BeamTypesException):
     """Exception raised when something causes a rootfinder error"""
 
@@ -28,6 +32,10 @@ class BestRootsCacheError(RootfinderError):
 
 class UnableToLoadBestRootsCacheError(BestRootsCacheError):
     """Unable to load the best roots cache"""
+
+
+class BeamTypeNotFoundInCacheError(BestRootsCacheError):
+    """Given beam type not found in the best roots cache"""
 
 
 class ModeNotFoundInCacheError(BestRootsCacheError):
