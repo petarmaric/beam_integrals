@@ -1,10 +1,10 @@
-from nose.tools import raises
+from nose.tools import eq_, raises
 import os
 import shutil
 import tempfile
 from beam_integrals import beam_types as bt
 from beam_integrals import characteristic_equation_solvers as ces
-from beam_integrals.exceptions import UnableToLoadBestRootsCacheError, ModeNotFoundInCacheError
+from beam_integrals import exceptions as exc
 from tests.tools import assert_is, assert_not_in #@UnresolvedImport
 
 
@@ -31,23 +31,37 @@ class TestBestRootsCache(object):
     def find_best_root(self, mode=None, decimal_precision=None):
         return ces.find_best_root(
             self.beam_type,
-            mode or self.max_mode,
+            mode if mode is not None else self.max_mode,
             decimal_precision or self.decimal_precision,
             use_cache=True,
             cache_instance=self.cache
         )
     
-    @raises(UnableToLoadBestRootsCacheError)
+    @raises(exc.UnableToLoadBestRootsCacheError)
     def test_unable_to_load_best_roots_cache_error(self):
         self.find_best_root()
     
-    @raises(ModeNotFoundInCacheError)
+    @raises(exc.InvalidModeError)
+    def test_invalid_mode_error(self):
+        self.regenerate_cache()
+        
+        self.find_best_root(mode=0)
+    
+    @raises(exc.BeamTypeNotFoundInCacheError)
+    def test_beam_type_not_found_in_cache_error(self):
+        self.regenerate_cache()
+        self.cache._load_disk_cache(self.decimal_precision)
+        
+        del self.cache._ram_cache[self.decimal_precision][self.beam_type.id]
+        self.find_best_root()
+    
+    @raises(exc.ModeNotFoundInCacheError)
     def test_mode_not_found_in_cache_error(self):
         self.regenerate_cache()
         
         self.find_best_root(mode=self.max_mode+1)
     
-    @raises(UnableToLoadBestRootsCacheError)
+    @raises(exc.UnableToLoadBestRootsCacheError)
     def test_different_decimal_precisions_dont_have_same_cache_key(self):
         self.regenerate_cache()
         
@@ -64,3 +78,11 @@ class TestBestRootsCache(object):
         self.regenerate_cache()
         
         assert_not_in(self.decimal_precision, self.cache._ram_cache)
+    
+    def test_mode_list_ordering(self):
+        self.regenerate_cache()
+        self.cache._load_disk_cache(self.decimal_precision)
+        
+        beam_type_id_to_best_roots = self.cache._ram_cache[self.decimal_precision]
+        for mode_list in beam_type_id_to_best_roots.values():
+            eq_(mode_list, sorted(mode_list))
