@@ -151,6 +151,16 @@ def find_best_root(beam_type, mode, decimal_precision=DEFAULT_DECIMAL_PRECISION,
 def find_best_roots(beam_type, max_mode=DEFAULT_MAX_MODE,
     decimal_precision=DEFAULT_DECIMAL_PRECISION, include_error=True, **kwargs):
     modes = range(1, max_mode+1)
+    # TODO: Further improve the performance by using `multiprocessing.Pool().map()`
+    # instead of this loop, but *NOT* on Windows. The initial implementation
+    # continually blew up (quite literally, fork bomb) on Windows when test were
+    # run with `nosetests` due to the lack of a sensible `fork()` syscall on
+    # Windows and weird issues when combining `nose` with `multiprocessing`.
+    # Issues continued even after extensive debugging, further research proved
+    # this to be a known problem:
+    #    * http://code.google.com/p/pyth1on-nose/issues/detail?id=398
+    #    * http://bugs.python.org/issue11240
+    # Here be dragons
     return [
         find_best_root(
             beam_type, mode, decimal_precision, include_error=include_error,
