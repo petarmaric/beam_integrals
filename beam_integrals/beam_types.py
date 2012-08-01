@@ -1,6 +1,6 @@
-from sympy import cos, cosh, Float, pi, sin, tan, tanh
+from sympy import cos, cosh, diff, Float, pi, sin, sinh, tan, tanh
 from warnings import warn
-from . import mu_m
+from . import a, y, mu_m
 from .exceptions import InvalidBeamTypeError, PerformanceWarning
 from .utils import FriendlyNameFromClassMixin, PluginMount
 
@@ -28,6 +28,24 @@ class BaseBeamType(FriendlyNameFromClassMixin):
     
     def mu_m_initial_guess(self, mode):
         raise NotImplementedError
+   
+    def Y_m(self, mode):
+        raise NotImplementedError
+    
+    _Y_M_DERIVATIVES_CACHE_MAX_ORDER = 2
+    _Y_m_derivatives_cache = None
+    def Y_m_derivative_from_cache(self, mode, order):
+        if not self._Y_m_derivatives_cache:
+            self._Y_m_derivatives_cache = {}
+            cache_keys = [None] + list(self.dont_improve_mu_m_for_modes)
+            for n in range(1, self._Y_M_DERIVATIVES_CACHE_MAX_ORDER+1):
+                self._Y_m_derivatives_cache[n] = dict(
+                    (k, diff(self.Y_m(k), y, n)) 
+                    for k in cache_keys
+                )
+        
+        key = mode if mode in self.dont_improve_mu_m_for_modes else None
+        return self._Y_m_derivatives_cache[order][key]
 
 
 class SimplySupportedBeam(BaseBeamType):
@@ -36,6 +54,9 @@ class SimplySupportedBeam(BaseBeamType):
     
     def mu_m_initial_guess(self, mode):
         return mode * pi
+   
+    def Y_m(self, mode): #@UnusedVariable
+        return sin(mu_m*y/a)
 
 
 class ClampedClampedBeam(BaseBeamType):
@@ -44,6 +65,14 @@ class ClampedClampedBeam(BaseBeamType):
     
     def mu_m_initial_guess(self, mode):
         return (2*mode + 1) * pi/2
+   
+    def Y_m(self, mode): #@UnusedVariable
+        return 1/(cos(mu_m)-cosh(mu_m)) * (
+              sin (mu_m*y/a)*cos (mu_m) - sin (mu_m*y/a)*cosh(mu_m)
+            - sinh(mu_m*y/a)*cos (mu_m) + sinh(mu_m*y/a)*cosh(mu_m)
+            - cos (mu_m*y/a)*sin (mu_m) + cosh(mu_m*y/a)*sin (mu_m)
+            + cos (mu_m*y/a)*sinh(mu_m) - cosh(mu_m*y/a)*sinh(mu_m)
+        )
 
 
 class ClampedFreeBeam(BaseBeamType):
@@ -52,6 +81,14 @@ class ClampedFreeBeam(BaseBeamType):
     
     def mu_m_initial_guess(self, mode):
         return (2*mode - 1) * pi/2
+   
+    def Y_m(self, mode): #@UnusedVariable
+        return 1/(cos(mu_m)+cosh(mu_m)) * (
+              sin (mu_m*y/a)*cos (mu_m) + sin (mu_m*y/a)*cosh(mu_m)
+            - sinh(mu_m*y/a)*cos (mu_m) - sinh(mu_m*y/a)*cosh(mu_m)
+            - cos (mu_m*y/a)*sin (mu_m) + cosh(mu_m*y/a)*sin (mu_m)
+            - cos (mu_m*y/a)*sinh(mu_m) + cosh(mu_m*y/a)*sinh(mu_m)
+        )
 
 
 class ClampedSimplySupportedBeam(BaseBeamType):
@@ -60,6 +97,9 @@ class ClampedSimplySupportedBeam(BaseBeamType):
     
     def mu_m_initial_guess(self, mode):
         return (4*mode + 1) * pi/4
+   
+    def Y_m(self, mode): #@UnusedVariable
+        return 1/sinh(mu_m) * (sin(mu_m*y/a)*sinh(mu_m) - sinh(mu_m*y/a)*sin(mu_m))
 
 
 class SimplySupportedFreeBeam(ClampedSimplySupportedBeam):
@@ -73,6 +113,13 @@ class SimplySupportedFreeBeam(ClampedSimplySupportedBeam):
             return Float(1)
         
         return super(SimplySupportedFreeBeam, self).mu_m_initial_guess(mode-1)
+   
+    def Y_m(self, mode):
+        # Special case for this mode
+        if mode == 1:
+            return y/a
+        
+        return 1/sinh(mu_m) * (sin(mu_m*y/a)*sinh(mu_m) + sinh(mu_m*y/a)*sin(mu_m))
 
 
 class FreeFreeBeam(ClampedClampedBeam):
@@ -81,13 +128,27 @@ class FreeFreeBeam(ClampedClampedBeam):
     dont_improve_mu_m_for_modes = (1, 2)
     
     def mu_m_initial_guess(self, mode):
-        # Special case for this mode
+        # Special case for these modes
         if mode == 1:
             return Float(0)
         elif mode == 2:
             return Float(1)
         
         return super(FreeFreeBeam, self).mu_m_initial_guess(mode-2)
+   
+    def Y_m(self, mode):
+        # Special case for these modes
+        if mode == 1:
+            return Float(1)
+        elif mode == 2:
+            return 1 - 2*y/a
+        
+        return 1/(cos(mu_m)+cosh(mu_m)) * (
+              sin (mu_m*y/a)*cos (mu_m) + sin (mu_m*y/a)*cosh(mu_m)
+            - sinh(mu_m*y/a)*cos (mu_m) - sinh(mu_m*y/a)*cosh(mu_m)
+            - cos (mu_m*y/a)*sin (mu_m) + cosh(mu_m*y/a)*sin (mu_m)
+            - cos (mu_m*y/a)*sinh(mu_m) + cosh(mu_m*y/a)*sinh(mu_m)
+        )
 
 
 ID_TO_BEAM_TYPE_CLASS = dict((cls.id, cls) for cls in BaseBeamType.plugins)
