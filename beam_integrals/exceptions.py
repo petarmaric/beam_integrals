@@ -40,3 +40,7 @@ class BeamTypeNotFoundInCacheError(BestRootsCacheError):
 
 class ModeNotFoundInCacheError(BestRootsCacheError):
     """Given mode not found in the best roots cache"""
+
+
+class ShellCommandError(Exception):
+    """Exception raised when a shell command causes an error"""

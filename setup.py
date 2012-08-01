@@ -37,6 +37,9 @@ setup(
     platforms='any',
     packages=find_packages(),
     include_package_data=True,
+    entry_points={
+        'console_scripts': ['beam_integrals=beam_integrals.shell:main']
+    },
     install_requires = parse_requirements('requirements.txt'),
     dependency_links = parse_dependency_links('requirements.txt'),
     setup_requires = ['nose>=1.0'],
