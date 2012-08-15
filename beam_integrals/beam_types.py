@@ -35,7 +35,7 @@ class BaseBeamType(FriendlyNameFromClassMixin):
     _Y_M_DERIVATIVES_CACHE_MAX_ORDER = 2
     _Y_m_derivatives_cache = None
     def Y_m_derivative_from_cache(self, mode, order):
-        if not self._Y_m_derivatives_cache:
+        if self._Y_m_derivatives_cache is None:
             self._Y_m_derivatives_cache = {}
             cache_keys = [None] + list(self.dont_improve_mu_m_for_modes)
             for n in range(1, self._Y_M_DERIVATIVES_CACHE_MAX_ORDER+1):
