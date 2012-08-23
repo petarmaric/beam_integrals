@@ -189,7 +189,7 @@ class BestRootsCache(object):
     def regenerate(self, max_mode=DEFAULT_MAX_MODE, decimal_precision=DEFAULT_DECIMAL_PRECISION, **kwargs):
         results = dict(
             (beam_type.id, find_best_roots(beam_type, max_mode, decimal_precision, **kwargs))
-            for beam_type in BaseBeamType.plugins.instances
+            for beam_type in BaseBeamType.plugins.instances #@UndefinedVariable
         )
         
         with open(self.disk_cache_filename(decimal_precision), 'wb') as f:
