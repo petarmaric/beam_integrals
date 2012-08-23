@@ -2,15 +2,15 @@ from nose.tools import eq_, raises
 import os
 import shutil
 import tempfile
-from beam_integrals import beam_types as bt
 from beam_integrals import characteristic_equation_solvers as ces
 from beam_integrals import exceptions as exc
+from beam_integrals.beam_types import SimplySupportedBeam
 from tests.tools import assert_is, assert_not_in #@UnresolvedImport
 
 
 class TestBestRootsCache(object):
     def setup(self):
-        self.beam_type = bt.SimplySupportedBeam()
+        self.beam_type = SimplySupportedBeam()
         
         # Lower than defaults to speed up tests
         self.max_mode = 2 

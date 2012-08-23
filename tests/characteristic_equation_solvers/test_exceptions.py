@@ -23,7 +23,7 @@ class TestExceptions(object):
         self.rootfinder = AndersonRootfinder()
     
     def teardown(self):
-        BaseBeamType.plugins.remove(type(self.beam_type)) #@UndefinedVariable
+        type(self.beam_type)._unregister_plugin() #@UndefinedVariable
         
     @raises(UndefinedRootError)
     def test_undefined_root_error(self):
