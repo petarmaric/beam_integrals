@@ -117,8 +117,8 @@ class TestPluginMount(object):
         assert_equal(actual_plugins, self.desired_http_method_plugins)
     
     def test_plugins_not_shared_between_mount_points(self):
-        assert set(self.HTTPMethod.plugins.classes).isdisjoint(
-            set(self.HttpResponse.plugins.classes)
+        assert self.HTTPMethod.plugins.classes.isdisjoint(
+            self.HttpResponse.plugins.classes
         )
     
     @issues_warnings(PerformanceWarning)
