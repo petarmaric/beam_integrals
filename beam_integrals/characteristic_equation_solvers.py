@@ -4,7 +4,7 @@ import cPickle as pickle
 from sympy import Abs, Float, nan, mpmath, sign
 from . import PROJECT_SETTINGS_DIR, DEFAULT_MAX_MODE, DEFAULT_DECIMAL_PRECISION
 from . import exceptions as exc
-from .beam_types import ALL_BEAM_TYPE_INSTANCES
+from .beam_types import BaseBeamType
 from .utils import FriendlyNameFromClassMixin, PluginMount
 
 
@@ -12,6 +12,10 @@ class BaseRootfinder(FriendlyNameFromClassMixin):
     max_iterations = 100
     
     __metaclass__ = PluginMount
+    
+    class Meta:
+        id_field = 'solver_name'
+        id_field_coerce = str
     
     @property
     def solver_name(self):
@@ -126,13 +130,10 @@ class SecantRootfinder(BaseStartingPointBasedRootfinder):
     pass
 
 
-ALL_ROOTFINDER_INSTANCES = [cls() for cls in BaseRootfinder.plugins]
-
-
 def find_root_candidates(beam_type, mode, decimal_precision=DEFAULT_DECIMAL_PRECISION, **kwargs):
     return dict(
-        (rootfinder.name, rootfinder(beam_type, mode, decimal_precision, **kwargs))
-        for rootfinder in ALL_ROOTFINDER_INSTANCES
+        (name, rootfinder(beam_type, mode, decimal_precision, **kwargs))
+        for name, rootfinder in BaseRootfinder.plugins.id_to_instance.items()
     )
 
 def find_best_root(beam_type, mode, decimal_precision=DEFAULT_DECIMAL_PRECISION,
@@ -188,7 +189,7 @@ class BestRootsCache(object):
     def regenerate(self, max_mode=DEFAULT_MAX_MODE, decimal_precision=DEFAULT_DECIMAL_PRECISION, **kwargs):
         results = dict(
             (beam_type.id, find_best_roots(beam_type, max_mode, decimal_precision, **kwargs))
-            for beam_type in ALL_BEAM_TYPE_INSTANCES
+            for beam_type in BaseBeamType.plugins.instances
         )
         
         with open(self.disk_cache_filename(decimal_precision), 'wb') as f:

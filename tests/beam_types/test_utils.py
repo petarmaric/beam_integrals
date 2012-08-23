@@ -1,5 +1,5 @@
 from nose.tools import eq_
-from beam_integrals import beam_types as bt
+from beam_integrals.beam_types import BaseBeamType
 
 
 ID_TO_STR_REPR = {
@@ -31,25 +31,25 @@ ID_TO_CHARACTERISTIC_EQUATION_STR_REPR = {
 
 
 def test_str_repr():
-    for id in bt.VALID_BEAM_TYPE_IDS: #@ReservedAssignment
+    for id in BaseBeamType.plugins.valid_ids: #@ReservedAssignment @UndefinedVariable
         yield check_str_repr, id
 
 def check_str_repr(id): #@ReservedAssignment
-    eq_(ID_TO_STR_REPR[id], str(bt.ID_TO_BEAM_TYPE_INSTANCE[id]))
+    eq_(ID_TO_STR_REPR[id], str(BaseBeamType.plugins.id_to_instance[id])) #@UndefinedVariable
 
 def test_filename():
-    for id in bt.VALID_BEAM_TYPE_IDS: #@ReservedAssignment
+    for id in BaseBeamType.plugins.valid_ids: #@ReservedAssignment @UndefinedVariable
         yield check_filename, id
 
 def check_filename(id): #@ReservedAssignment
-    eq_(ID_TO_FILENAME[id], bt.ID_TO_BEAM_TYPE_INSTANCE[id].filename)
+    eq_(ID_TO_FILENAME[id], BaseBeamType.plugins.id_to_instance[id].filename) #@UndefinedVariable
 
 def test_characteristic_equation_str_repr():
-    for id in bt.VALID_BEAM_TYPE_IDS: #@ReservedAssignment
+    for id in BaseBeamType.plugins.valid_ids: #@ReservedAssignment @UndefinedVariable
         yield check_characteristic_equation_str_repr, id
 
 def check_characteristic_equation_str_repr(id): #@ReservedAssignment
     eq_(
         ID_TO_CHARACTERISTIC_EQUATION_STR_REPR[id],
-        bt.ID_TO_BEAM_TYPE_INSTANCE[id].characteristic_equation_str
+        BaseBeamType.plugins.id_to_instance[id].characteristic_equation_str #@UndefinedVariable
     )
