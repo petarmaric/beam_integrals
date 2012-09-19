@@ -51,6 +51,7 @@ class TestPluginMount(object):
         self.desired_http_method_plugins = AttrDict(
             classes=set(id_to_class.values()),
             id_to_class=id_to_class,
+            class_to_id=dict((v, k) for k, v in id_to_class.items()),
             classes_sorted_by_id=[v for _, v in sorted(id_to_class.items())],
             valid_ids=set(id_to_class.keys()),
         )

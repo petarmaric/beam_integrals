@@ -66,6 +66,7 @@ class PluginMount(type):
             x.instances = set(cls() for cls in x.classes)
             x.id_to_instance = dict((getattr(obj, self._meta.id_field), obj) for obj in x.instances)
             x.id_to_class = dict((k, type(v)) for k, v in x.id_to_instance.items())
+            x.class_to_id = dict((v, k) for k, v in x.id_to_class.items())
             x.instances_sorted_by_id = [v for _, v in sorted(x.id_to_instance.items())]
             x.valid_ids = set(x.id_to_instance)
             self._plugins = x
