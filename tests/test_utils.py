@@ -136,6 +136,10 @@ class TestPluginMount(object):
             self.desired_http_response_class
         )
     
+    def test_coerce_works_with_empty_plugin_info_cache(self):
+        self.HttpResponse._plugins = None
+        self.HTTPMethod.coerce(self.actual_http_method_id)
+    
     def test_coerce_nonnumeric_id(self):
         assert_is(
             self.HTTPMethod.coerce(self.actual_http_method_id),
