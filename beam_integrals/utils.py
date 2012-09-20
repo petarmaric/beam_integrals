@@ -60,7 +60,7 @@ class PluginMount(type):
     
     @property
     def plugins(self):
-        if self._plugins is None:
+        if self._meta._base_class._plugins is None:
             x = AttrDict()
             x.classes = set(self._plugin_registry)
             x.instances = set(cls() for cls in x.classes)
@@ -69,9 +69,9 @@ class PluginMount(type):
             x.class_to_id = dict((v, k) for k, v in x.id_to_class.items())
             x.instances_sorted_by_id = [v for _, v in sorted(x.id_to_instance.items())]
             x.valid_ids = set(x.id_to_instance)
-            self._plugins = x
+            self._meta._base_class._plugins = x
         
-        return self._plugins
+        return self._meta._base_class._plugins
     
     def coerce(self, value):
         """Coerce the passed value into the right instance"""
