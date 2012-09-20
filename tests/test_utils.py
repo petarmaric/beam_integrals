@@ -38,6 +38,9 @@ class TestPluginMount(object):
             pass
         
         self.HTTPMethod = HTTPMethod
+        self.GET = GET
+        self.POST = POST
+        self.FakePOST = FakePOST
         
         self.actual_http_method_id = 'POST'
         self.desired_http_method_instance = HTTPMethod.plugins.id_to_instance[
@@ -116,6 +119,26 @@ class TestPluginMount(object):
         
         # Compare the remaining plugin information directly
         assert_equal(actual_plugins, self.desired_http_method_plugins)
+    
+    def test_distant_relatives_use_same_plugin_info_cache(self):
+        self.GET._plugins = None
+        self.POST._plugins = None
+        assert_is(self.GET.plugins, self.POST.plugins)
+    
+    def test_child_uses_same_plugin_info_cache_as_parent(self):
+        self.FakePOST._plugins = None
+        self.POST._plugins = None
+        assert_is(self.FakePOST.plugins, self.POST.plugins)
+    
+    def test_child_uses_same_plugin_info_cache_as_base_class(self):
+        self.FakePOST._plugins = None
+        self.HTTPMethod._plugins = None
+        assert_is(self.FakePOST.plugins, self.HTTPMethod.plugins)
+    
+    def test_parent_uses_same_plugin_info_cache_as_base_class(self):
+        self.POST._plugins = None
+        self.HTTPMethod._plugins = None
+        assert_is(self.POST.plugins, self.HTTPMethod.plugins)
     
     def test_plugins_not_shared_between_mount_points(self):
         assert self.HTTPMethod.plugins.classes.isdisjoint(
