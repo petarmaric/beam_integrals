@@ -95,7 +95,7 @@ class PluginMount(type):
         try:
             object_id = self._meta.id_field_coerce(value)
             try:
-                return self._plugins.id_to_instance[object_id]
+                return self.plugins.id_to_instance[object_id]
             except KeyError:
                 raise CoercionError("%d is not a valid object id" % object_id)
         except (TypeError, ValueError):
