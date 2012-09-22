@@ -66,6 +66,9 @@ class TestPluginMount(object):
             __metaclass__ = PluginMount
             class Meta:
                 id_field = 'status_code'
+            @classmethod
+            def _contribute_to_plugins(cls, _plugins):
+                _plugins.contribute_to_plugins_works = True
         class OK(HttpResponse):
             status_code = 200
         class BaseRedirection(HttpResponse):
@@ -119,6 +122,9 @@ class TestPluginMount(object):
         
         # Compare the remaining plugin information directly
         assert_equal(actual_plugins, self.desired_http_method_plugins)
+    
+    def test_contribute_to_plugins(self):
+        assert_is(self.HttpResponse.plugins.contribute_to_plugins_works, True)
     
     def test_distant_relatives_use_same_plugin_info_cache(self):
         self.GET._plugins = None
