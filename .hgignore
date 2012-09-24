@@ -9,3 +9,5 @@ beam_integrals.egg-info/
 html_coverage_report/
 coverage.xml
 nosetests.xml
+*.bat
+*.sh
