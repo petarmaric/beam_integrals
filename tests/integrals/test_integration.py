@@ -55,26 +55,6 @@ def test_integrate():
             for m, t, v, n in integral.iterate_over_used_variables(start_mode=START_MODE, max_mode=tests.MAX_MODE):
                 yield check_integrate, integral_id, beam_type_id, m, t, v, n
 
-def test_integrate_options():
-    integral = BaseIntegral.coerce(1) #@UndefinedVariable
-    beam_type = BaseBeamType.coerce(1) #@UndefinedVariable
-    
-    def base_integrate(**kwargs):
-        return integrate(
-            integral, beam_type,
-            a=1.,
-            m=1, n=1,
-            decimal_precision=tests.DECIMAL_PRECISION,
-            **kwargs
-        )
-    
-    # When called with `error=True` `integrate` should return a `(result, error)` tuple
-    result_with_error_info = base_integrate(error=True)
-    assert_is(type(result_with_error_info), tuple)
-    
-    # `integrate` should return the same `result` regardless of the `error` flag
-    assert_equal(base_integrate(), result_with_error_info[0])
-
 def check_integrate(integral_id, beam_type_id, m, t, v, n):
     integral = BaseIntegral.coerce(integral_id) #@UndefinedVariable
     
@@ -98,6 +78,26 @@ def check_integrate(integral_id, beam_type_id, m, t, v, n):
         integral_cache[integral_id][(m, t, v, n)] = result
     
     assert_less_equal(error, tests.MAX_ERROR_TOLERANCE)
+
+def test_integrate_options():
+    integral = BaseIntegral.coerce(1) #@UndefinedVariable
+    beam_type = BaseBeamType.coerce(1) #@UndefinedVariable
+    
+    def base_integrate(**kwargs):
+        return integrate(
+            integral, beam_type,
+            a=1.,
+            m=1, n=1,
+            decimal_precision=tests.DECIMAL_PRECISION,
+            **kwargs
+        )
+    
+    # When called with `error=True` `integrate` should return a `(result, error)` tuple
+    result_with_error_info = base_integrate(error=True)
+    assert_is(type(result_with_error_info), tuple)
+    
+    # `integrate` should return the same `result` regardless of the `error` flag
+    assert_equal(base_integrate(), result_with_error_info[0])
 
 def test_simply_supported_beam_closed_form():
     for integral_id in INTEGRAL_CLOSED_FORMS_FOR_SIMPLY_SUPPORTED_BEAM:
