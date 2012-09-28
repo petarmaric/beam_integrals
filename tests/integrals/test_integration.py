@@ -1,3 +1,5 @@
+from itertools import chain
+from math import ceil, floor
 from nose.plugins.skip import SkipTest
 import shutil
 from sympy import Abs
@@ -9,8 +11,6 @@ from beam_integrals.integrals import BaseIntegral, integrate
 import tests
 from tests.tools import assert_almost_equal, assert_equal, assert_less_equal, assert_is #@UnresolvedImport
 
-
-START_MODE = tests.MAX_MODE - 1 # Higher than defaults to speed up tests
 
 INTEGRAL_CLOSED_FORMS_FOR_SIMPLY_SUPPORTED_BEAM = {
     1:   a/2.,
@@ -37,6 +37,21 @@ def teardown():
     ces.best_roots_cache = _old_best_roots_cache
     shutil.rmtree(disk_cache_dir)
 
+def iterate_over_used_variables(integral, spread=1):
+    """
+    Iterate over 3 smaller (yet representative) mode ranges to speed up tests
+    """
+    mid = tests.MAX_MODE/2
+    mode_ranges = ( 
+        (1, 1 + spread),
+        (mid - int(floor(spread/2.)), mid + int(ceil(spread/2.))),
+        (tests.MAX_MODE - spread, tests.MAX_MODE)
+    )
+    return chain.from_iterable(
+        integral.iterate_over_used_variables(start_mode=start, max_mode=stop)
+        for start, stop in mode_ranges
+    )
+
 def test_integrate():
     for integral_id in BaseIntegral.plugins.valid_ids: #@UndefinedVariable
         integral = BaseIntegral.coerce(integral_id) #@UndefinedVariable
@@ -52,7 +67,7 @@ def test_integrate():
             # beam_type/integral combination
             cache_keys_seen.clear()
             
-            for m, t, v, n in integral.iterate_over_used_variables(start_mode=START_MODE, max_mode=tests.MAX_MODE):
+            for m, t, v, n in iterate_over_used_variables(integral):
                 yield check_integrate, integral_id, beam_type_id, m, t, v, n
 
 def check_integrate(integral_id, beam_type_id, m, t, v, n):
@@ -106,7 +121,7 @@ def test_simply_supported_beam_closed_form():
         # Clear out `cache_keys_seen` before testing a new integral
         cache_keys_seen.clear()
         
-        for m, t, v, n in integral.iterate_over_used_variables(start_mode=START_MODE, max_mode=tests.MAX_MODE):
+        for m, t, v, n in iterate_over_used_variables(integral):
             yield check_simply_supported_beam_closed_form, integral_id, m, t, v, n
 
 def check_simply_supported_beam_closed_form(integral_id, m, t, v, n):
