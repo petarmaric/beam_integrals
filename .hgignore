@@ -11,3 +11,4 @@ coverage.xml
 nosetests.xml
 *.bat
 *.sh
+_developer_experiments/
