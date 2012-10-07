@@ -62,7 +62,7 @@ Quick start::
 
     >>> from beam_integrals.beam_types import FreeFreeBeam
     >>> from beam_integrals.integrals import I1, integrate
-    >>> integrate(integral=I1, beam_type=FreeFreeBeam, a=1., m=1, t=1, v=1, n=1)
+    >>> integrate(I1(), FreeFreeBeam(), a=1., m=1, n=1, error=True)
 
 
 Contribute
