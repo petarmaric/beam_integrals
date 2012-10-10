@@ -1,3 +1,4 @@
+import multiprocessing
 from operator import itemgetter
 import os
 import cPickle as pickle
@@ -5,7 +6,7 @@ from sympy import Abs, Float, nan, mpmath, sign
 from . import PROJECT_SETTINGS_DIR, DEFAULT_MAX_MODE, DEFAULT_DECIMAL_PRECISION
 from . import exceptions as exc
 from .beam_types import BaseBeamType
-from .utils import FriendlyNameFromClassMixin, PluginMount
+from .utils import AttrDict, FriendlyNameFromClassMixin, PluginMount
 
 
 class BaseRootfinder(FriendlyNameFromClassMixin):
@@ -149,26 +150,29 @@ def find_best_root(beam_type, mode, decimal_precision=DEFAULT_DECIMAL_PRECISION,
     
     return result if include_error else result[0]
 
+def _init_pool(*data):
+    global _pool_data
+    
+    data_keys = 'beam_type, decimal_precision, include_error, kwargs'.split(', ')
+    _pool_data = AttrDict(zip(data_keys, data))
+
+def _worker(mode):
+    c = _pool_data
+    return find_best_root(
+        c.beam_type, mode, c.decimal_precision, include_error=c.include_error,
+        use_cache=False, **c.kwargs
+    )
+
 def find_best_roots(beam_type, max_mode=DEFAULT_MAX_MODE,
     decimal_precision=DEFAULT_DECIMAL_PRECISION, include_error=True, **kwargs):
-    modes = range(1, max_mode+1)
-    # TODO: Further improve the performance by using `multiprocessing.Pool().map()`
-    # instead of this loop, but *NOT* on Windows. The initial implementation
-    # continually blew up (quite literally, fork bomb) on Windows when test were
-    # run with `nosetests` due to the lack of a sensible `fork()` syscall on
-    # Windows and weird issues when combining `nose` with `multiprocessing`.
-    # Issues continued even after extensive debugging, further research proved
-    # this to be a known problem:
-    #    * http://code.google.com/p/pyth1on-nose/issues/detail?id=398
-    #    * http://bugs.python.org/issue11240
-    # Here be dragons
-    return [
-        find_best_root(
-            beam_type, mode, decimal_precision, include_error=include_error,
-            use_cache=False, **kwargs
-        )
-        for mode in modes
-    ]
+    results = multiprocessing.Pool(
+        initializer=_init_pool,
+        initargs=(beam_type, decimal_precision, include_error, kwargs)
+    ).map(
+        func=_worker,
+        iterable=range(1, max_mode+1)
+    )
+    return results
 
 
 class BestRootsCache(object):
