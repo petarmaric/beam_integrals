@@ -150,13 +150,13 @@ def find_best_root(beam_type, mode, decimal_precision=DEFAULT_DECIMAL_PRECISION,
     
     return result if include_error else result[0]
 
-def _init_pool(*data):
+def _init_pool(*data): #pragma: no cover
     global _pool_data
     
     data_keys = 'beam_type, decimal_precision, include_error, kwargs'.split(', ')
     _pool_data = AttrDict(zip(data_keys, data))
 
-def _worker(mode):
+def _worker(mode): #pragma: no cover
     c = _pool_data
     return find_best_root(
         c.beam_type, mode, c.decimal_precision, include_error=c.include_error,
