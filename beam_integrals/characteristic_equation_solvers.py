@@ -165,13 +165,14 @@ def _worker(mode): #pragma: no cover
 
 def find_best_roots(beam_type, max_mode=DEFAULT_MAX_MODE,
     decimal_precision=DEFAULT_DECIMAL_PRECISION, include_error=True, **kwargs):
-    results = multiprocessing.Pool(
+    pool = multiprocessing.Pool(
         initializer=_init_pool,
         initargs=(beam_type, decimal_precision, include_error, kwargs)
-    ).map(
-        func=_worker,
-        iterable=range(1, max_mode+1)
     )
+    results = pool.map(func=_worker, iterable=range(1, max_mode+1))
+    
+    pool.close()
+    pool.join()
     return results
 
 
