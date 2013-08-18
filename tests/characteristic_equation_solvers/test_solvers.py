@@ -1,10 +1,10 @@
 from nose.tools import raises
 from nose.plugins.skip import SkipTest
+from nose_extra_tools import assert_less_equal #@UnresolvedImport
 from sympy.mpmath.libmp.libmpf import prec_to_dps
 from beam_integrals.beam_types import BaseBeamType
 from beam_integrals.characteristic_equation_solvers import find_best_root
 import tests as t
-from tests.tools import assert_less_equal #@UnresolvedImport
 
 
 def test_find_best_root():

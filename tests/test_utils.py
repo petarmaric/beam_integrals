@@ -1,7 +1,7 @@
 from nose.tools import eq_, raises
+from nose_extra_tools import assert_equal, assert_is, issues_warnings #@UnresolvedImport
 from beam_integrals.exceptions import CoercionError, PerformanceWarning
 from beam_integrals.utils import AttrDict, FriendlyNameFromClassMixin, PluginMount
-from tests.tools import assert_equal, assert_is, issues_warnings #@UnresolvedImport
 
 
 def test_friendly_name_from_class_mixin():

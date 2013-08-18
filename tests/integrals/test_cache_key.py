@@ -1,6 +1,6 @@
 from itertools import chain, combinations
+from nose_extra_tools import assert_in, assert_not_in #@UnresolvedImport
 from beam_integrals.integrals import BaseIntegral, BaseIntegralWithSymetricVariables
-from tests.tools import assert_in, assert_not_in #@UnresolvedImport
 
 
 MAX_MODE = 10 # Lower than defaults to speed up tests

@@ -1,3 +1,0 @@
-# Python 2.7 introduced new assert* methods in `unittest.TestCase`, fallback to
-# backported library if Python < 2.7 
-unittest2

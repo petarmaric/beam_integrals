@@ -1,11 +1,11 @@
 from nose.tools import eq_, raises
+from nose_extra_tools import assert_is, assert_not_in #@UnresolvedImport
 import os
 import shutil
 import tempfile
 from beam_integrals import characteristic_equation_solvers as ces
 from beam_integrals import exceptions as exc
 from beam_integrals.beam_types import SimplySupportedBeam
-from tests.tools import assert_is, assert_not_in #@UnresolvedImport
 
 
 class TestBestRootsCache(object):

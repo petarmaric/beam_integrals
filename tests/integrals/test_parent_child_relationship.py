@@ -1,6 +1,6 @@
 from nose.tools import eq_
+from nose_extra_tools import assert_in #@UnresolvedImport
 from beam_integrals.integrals import BaseIntegral
-from tests.tools import assert_in #@UnresolvedImport
 
 
 def test_parent_id():

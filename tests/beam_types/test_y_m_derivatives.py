@@ -1,9 +1,9 @@
 from nose.tools import eq_
+from nose_extra_tools import assert_is #@UnresolvedImport
 from sympy import diff
 from beam_integrals import y
 from beam_integrals.beam_types import BaseBeamType
 import tests as t
-from tests.tools import assert_is #@UnresolvedImport
 
 
 def setup():
