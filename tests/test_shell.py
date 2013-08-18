@@ -1,9 +1,9 @@
 import mock
+from nose_extra_tools import assert_raises #@UnresolvedImport
 import beam_integrals as b
 from beam_integrals import characteristic_equation_solvers as ces
 from beam_integrals.exceptions import ShellCommandError
 from beam_integrals.shell import Shell
-from tests.tools import assert_raises #@UnresolvedImport
 
 
 def setup():

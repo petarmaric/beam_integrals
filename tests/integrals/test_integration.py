@@ -1,6 +1,7 @@
 from itertools import chain
 from math import ceil, floor
 from nose.plugins.skip import SkipTest
+from nose_extra_tools import assert_almost_equal, assert_equal, assert_less_equal, assert_is #@UnresolvedImport
 import shutil
 from sympy import Abs
 import tempfile
@@ -9,7 +10,6 @@ from beam_integrals import characteristic_equation_solvers as ces
 from beam_integrals.beam_types import BaseBeamType
 from beam_integrals.integrals import BaseIntegral, integrate
 import tests
-from tests.tools import assert_almost_equal, assert_equal, assert_less_equal, assert_is #@UnresolvedImport
 
 
 INTEGRAL_CLOSED_FORMS_FOR_SIMPLY_SUPPORTED_BEAM = {
