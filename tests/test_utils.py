@@ -1,17 +1,8 @@
-from nose.tools import eq_, raises
+from friendly_name_mixin import FriendlyNameFromClassMixin
+from nose.tools import raises
 from nose_extra_tools import assert_equal, assert_is, issues_warnings #@UnresolvedImport
 from beam_integrals.exceptions import CoercionError, PerformanceWarning
-from beam_integrals.utils import AttrDict, FriendlyNameFromClassMixin, PluginMount
-
-
-def test_friendly_name_from_class_mixin():
-    class IsHTML5BetterThanFlash11OrIsItMe(FriendlyNameFromClassMixin):
-        answer = 'yes'
-    
-    eq_(
-        IsHTML5BetterThanFlash11OrIsItMe().name,
-        'Is HTML5 Better Than Flash11 Or Is It Me'
-    )
+from beam_integrals.utils import AttrDict, PluginMount
 
 
 class TestPluginMount(object):

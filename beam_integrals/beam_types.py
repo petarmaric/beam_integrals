@@ -1,6 +1,7 @@
+from friendly_name_mixin import FriendlyNameFromClassMixin
 from sympy import cos, cosh, diff, Float, pi, sin, sinh, tan, tanh
 from . import a, y, mu_m
-from .utils import FriendlyNameFromClassMixin, PluginMount
+from .utils import PluginMount
 
 
 class BaseBeamType(FriendlyNameFromClassMixin):

@@ -2,11 +2,12 @@ import multiprocessing
 from operator import itemgetter
 import os
 import cPickle as pickle
+from friendly_name_mixin import FriendlyNameFromClassMixin
 from sympy import Abs, Float, nan, mpmath, sign
 from . import PROJECT_SETTINGS_DIR, DEFAULT_MAX_MODE, DEFAULT_DECIMAL_PRECISION
 from . import exceptions as exc
 from .beam_types import BaseBeamType
-from .utils import AttrDict, FriendlyNameFromClassMixin, PluginMount
+from .utils import AttrDict, PluginMount
 
 
 class BaseRootfinder(FriendlyNameFromClassMixin):

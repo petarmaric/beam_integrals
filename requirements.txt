@@ -1,1 +1,2 @@
+friendly_name_mixin>=1.0
 sympy==0.7.1
