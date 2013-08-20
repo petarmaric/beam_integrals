@@ -3,11 +3,11 @@ from operator import itemgetter
 import os
 import cPickle as pickle
 from friendly_name_mixin import FriendlyNameFromClassMixin
+from simple_plugins import AttrDict, PluginMount
 from sympy import Abs, Float, nan, mpmath, sign
 from . import PROJECT_SETTINGS_DIR, DEFAULT_MAX_MODE, DEFAULT_DECIMAL_PRECISION
 from . import exceptions as exc
 from .beam_types import BaseBeamType
-from .utils import AttrDict, PluginMount
 
 
 class BaseRootfinder(FriendlyNameFromClassMixin):

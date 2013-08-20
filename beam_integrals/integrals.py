@@ -1,10 +1,10 @@
 import itertools
 import re
 from friendly_name_mixin import FriendlyNameFromClassMixin
+from simple_plugins import PluginMount
 from sympy import Float, mpmath
 from . import DEFAULT_DECIMAL_PRECISION
 from .characteristic_equation_solvers import find_best_root
-from .utils import PluginMount
 
 
 class BaseIntegral(FriendlyNameFromClassMixin):

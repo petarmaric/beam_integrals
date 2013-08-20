@@ -4,7 +4,7 @@ from sympy import mpmath, symbols
 
 if 'MPMATH_NOGMPY' not in os.environ and mpmath.libmp.BACKEND == 'python': #@UndefinedVariable, pragma: no cover
     import warnings
-    from .exceptions import PerformanceWarning
+    from simple_plugins import PerformanceWarning
     
     warnings.warn(
         'gmpy is not available for speedups (code will still run correctly, '\
