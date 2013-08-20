@@ -2,14 +2,6 @@ class BeamTypesException(Exception):
     """A generic exception for all others to extend""" 
 
 
-class PerformanceWarning(UserWarning):
-    """Warning issued when something causes a performance degradation"""
-
-
-class CoercionError(BeamTypesException):
-    """The given value can't be coerced to a valid instance"""
-
-
 class InvalidModeError(BeamTypesException):
     """The given value isn't a valid mode"""
 
