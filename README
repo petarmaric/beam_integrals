@@ -11,6 +11,9 @@ Technology, Republic of Serbia. This support is gratefully acknowledged.
 
 `Continuous integration`_ is powered by `Jenkins`_.
 
+.. image:: http://ci.petarmaric.com/job/beam_integrals/badge/icon
+   :target: http://ci.petarmaric.com/job/beam_integrals/
+
 References
 ----------
 
