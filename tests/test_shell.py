@@ -15,17 +15,17 @@ def test_help():
     @mock.patch.object(_shell.parser, 'print_help')
     def test_help(m):
         shell('help')
-        m.assert_called()
+        m.assert_called_with()
         
     @mock.patch.object(_shell.parser, 'print_help')
     def test_help_no_args(m):
         shell('')
-        m.assert_called()
+        m.assert_called_with()
         
     @mock.patch.object(_shell.subcommands['best-roots-of-characteristic-equations-regenerate-cache'], 'print_help')
     def test_help_best_roots_of_characteristic_equations_regenerate_cache(m):
         shell('help best-roots-of-characteristic-equations-regenerate-cache')
-        m.assert_called()
+        m.assert_called_with()
     
     test_help()
     test_help_no_args()
