@@ -35,7 +35,7 @@ setup(
         'Topic :: Scientific/Engineering :: Physics',
     ],
     platforms='any',
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     entry_points={
         'console_scripts': ['beam_integrals=beam_integrals.shell:main']
