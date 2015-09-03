@@ -7,3 +7,6 @@ include .coveragerc
 include distribute_setup.py
 include requirements*.txt
 include requirements_utils.py
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co] 

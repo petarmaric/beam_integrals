@@ -13,8 +13,9 @@ if sys.version_info < (2, 6):
 
 setup(
     name='beam_integrals',
-    version='0.1.0-pre-alpha',
+    version='1.0.0',
     url='https://bitbucket.org/petar/beam_integrals/',
+    license='BSD', 
     author='Petar Maric',
     author_email='petarmaric@uns.ac.rs',
     description='Console app and Python API for determining beam integrals of '\
@@ -23,7 +24,7 @@ setup(
                 '8680297194)',
     long_description=open('README').read(),
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
