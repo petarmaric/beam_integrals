@@ -1,5 +1,5 @@
 coverage>=3.3
-mock>=1.0.1
+mock==1.0.1
 nose>=1.0
 nosexcover>=1.0.7
 nose_extra_tools>=1.0
