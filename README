@@ -79,3 +79,13 @@ and send a pull request. Make sure you add yourself to `AUTHORS`_.
 .. _`please let us know`: https://bitbucket.org/petar/beam_integrals/issues/new
 .. _`the repository`: http://bitbucket.org/petar/beam_integrals
 .. _`AUTHORS`: https://bitbucket.org/petar/beam_integrals/src/default/AUTHORS
+
+
+New in beam_integrals 1.1.0
+===========================
+
+Feature additions
+-----------------
+
+    * Added a heuristic to help guessing the scale function/factor, as per the
+      section 3.4 of my PhD thesis.
