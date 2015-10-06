@@ -18,5 +18,10 @@ exclude_lines =
     if 0:
     if __name__ == .__main__.:
 
+    # Account for a weird bug in Python regarding 'continue' and code coverage
+    # https://bitbucket.org/ned/coveragepy/issues/198/continue-marked-as-not-covered
+    # http://bugs.python.org/issue2506
+    continue
+
 [html]
 directory = html_coverage_report

@@ -2,9 +2,10 @@ import itertools
 import re
 from friendly_name_mixin import FriendlyNameFromClassMixin
 from simple_plugins import PluginMount
-from sympy import Float, mpmath
-from . import DEFAULT_DECIMAL_PRECISION
+from sympy import Float, factor, mpmath, Symbol
+from . import a, DEFAULT_DECIMAL_PRECISION
 from .characteristic_equation_solvers import find_best_root
+from .exceptions import UnableToGuessScaleFunctionError
 
 
 class BaseIntegral(FriendlyNameFromClassMixin):
@@ -71,6 +72,29 @@ class BaseIntegral(FriendlyNameFromClassMixin):
     
     def _integrand(self, Y_m, dY_m, ddY_m, m, t, v, n):
         raise NotImplementedError
+    
+    def guess_scale_function(self, beam_type, m, t, v, n):
+        # Special case for these modes due to the mode-specific boundary condition
+        if set([m, t, v, n]) & set(beam_type.dont_improve_mu_m_for_modes):
+            raise UnableToGuessScaleFunctionError
+        
+        Y_m = beam_type.Y_m
+        dY_m = lambda mode: beam_type.Y_m_derivative_from_cache(mode, order=1)
+        ddY_m = lambda mode: beam_type.Y_m_derivative_from_cache(mode, order=2)
+        
+        integrand = self._integrand(Y_m, dY_m, ddY_m, m, t, v, n)
+        factorized = factor(integrand)
+        
+        scale_by = Float(1) # If nothing is found
+        for arg in factorized.args:
+            atoms = arg.atoms(Symbol)
+            if atoms == set([a]): # Skip atoms with anything besides 'a'
+                scale_by = arg
+        
+        return scale_by*a
+    
+    def guess_scale_factor(self, beam_type, m, t, v, n):
+        return self.guess_scale_function(beam_type, m, t, v, n).as_powers_dict()[a]
     
     def __call__(self, beam_type, m, t, v, n, decimal_precision=DEFAULT_DECIMAL_PRECISION):
         return self.integrand(beam_type, m, t, v, n, decimal_precision)

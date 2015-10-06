@@ -34,5 +34,9 @@ class ModeNotFoundInCacheError(BestRootsCacheError):
     """Given mode not found in the best roots cache"""
 
 
+class UnableToGuessScaleFunctionError(BeamTypesException):
+    """Unable to guess the scale function"""
+
+
 class ShellCommandError(Exception):
     """Exception raised when a shell command causes an error"""
