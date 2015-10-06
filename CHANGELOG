@@ -1,0 +1,13 @@
+beam_integrals 1.1.0 (2015-10-07)
+=================================
+
+Feature additions
+-----------------
+
+    * Added a heuristic to help guessing the scale function/factor, as per the
+      section 3.4 of my PhD thesis.
+
+beam_integrals 1.0.0 (2015-09-03)
+=================================
+
+    * Initial release.
