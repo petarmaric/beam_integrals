@@ -1,3 +1,12 @@
+beam_integrals 1.1.1 (November 13, 2017)
+========================================
+
+Bugfixes
+--------
+
+    * Removed distribute_setup.py as 'Distribute' is a now deprecated fork of
+      the 'Setuptools' project.
+
 beam_integrals 1.1.0 (2015-10-07)
 =================================
 
