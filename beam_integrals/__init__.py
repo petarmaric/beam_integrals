@@ -17,7 +17,7 @@ PROJECT_SETTINGS_DIR = os.path.expanduser('~/.beam_integrals')
 DEFAULT_MAX_MODE = 100
 DEFAULT_DECIMAL_PRECISION = 155
 
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 
 # Commonly used symbols
