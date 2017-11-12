@@ -12,7 +12,7 @@ setup(
     name='beam_integrals',
     version='1.1.0',
     url='https://bitbucket.org/petar/beam_integrals/',
-    license='BSD', 
+    license='BSD',
     author='Petar Maric',
     author_email='petarmaric@uns.ac.rs',
     description='Console app and Python API for determining beam integrals of '\
