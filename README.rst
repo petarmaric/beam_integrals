@@ -71,14 +71,14 @@ Quick start::
 Contribute
 ==========
 
-If you find any bugs, or wish to propose new features `please let us know`_. 
+If you find any bugs, or wish to propose new features `please let us know`_.
 
 If you'd like to contribute, simply fork `the repository`_, commit your changes
 and send a pull request. Make sure you add yourself to `AUTHORS`_.
 
-.. _`please let us know`: https://bitbucket.org/petar/beam_integrals/issues/new
-.. _`the repository`: http://bitbucket.org/petar/beam_integrals
-.. _`AUTHORS`: https://bitbucket.org/petar/beam_integrals/src/default/AUTHORS
+.. _`please let us know`: https://github.com/petarmaric/beam_integrals/issues/new
+.. _`the repository`: https://github.com/petarmaric/beam_integrals
+.. _`AUTHORS`: https://github.com/petarmaric/beam_integrals/blob/master/AUTHORS
 
 
 New in beam_integrals 1.1.0

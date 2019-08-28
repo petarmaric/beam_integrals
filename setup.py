@@ -11,7 +11,7 @@ if sys.version_info < (2, 6):
 setup(
     name='beam_integrals',
     version='1.1.1',
-    url='https://bitbucket.org/petar/beam_integrals/',
+    url='https://github.com/petarmaric/beam_integrals/',
     license='BSD',
     author='Petar Maric',
     author_email='petarmaric@uns.ac.rs',
