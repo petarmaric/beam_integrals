@@ -12,3 +12,4 @@ nosetests.xml
 *.sh
 _developer_experiments/
 .idea/
+.vscode/
