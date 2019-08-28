@@ -19,7 +19,7 @@ setup(
                 'all 6 supported beam types, as described in D.D. Milasinovic,'\
                 ' "The Finite Strip Method in Computational Mechanics" (ISBN '\
                 '8680297194)',
-    long_description=open('README').read(),
+    long_description=open('README.rst').read(),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
