@@ -1,3 +1,11 @@
+beam_integrals 1.1.2 (August 28, 2019)
+======================================
+
+Bugfixes
+--------
+
+    * Migrated from Bitbucket (Mercurial) to GitHub (Git).
+
 beam_integrals 1.1.1 (November 13, 2017)
 ========================================
 
